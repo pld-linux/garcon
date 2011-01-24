@@ -13,10 +13,12 @@ Group:		X11/Libraries
 Source0:	http://archive.xfce.org/src/libs/garcon/0.1/%{name}-%{version}.tar.bz2
 # Source0-md5:	3c1d07e9d93d32c1073fcbc9bce80426
 URL:		http://archive.xfce.org/src/libs/garcon/
-BuildRequires:	xfce4-dev-tools >= 4.6.0
+BuildRequires:	gettext-devel
 BuildRequires:	gtk+2-devel >= 2:2.10.0
 BuildRequires:	gtk-doc >= 1.0
-BuildRequires:	gettext-devel
+BuildRequires:	intltool
+BuildRequires:	pkgconfig
+BuildRequires:	xfce4-dev-tools >= 4.6.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
