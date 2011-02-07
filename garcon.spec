@@ -96,6 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 
 # pt locale is already installed, so there is no need to rename it
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/pt_PT
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %find_lang %{name}
 
@@ -111,12 +112,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libgarcon-1.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgarcon-1.so.0
 %{_sysconfdir}/xdg/menus
-%{_datadir}/desktop-directories/*
+%{_datadir}/desktop-directories
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgarcon-1.so
-%{_libdir}/libgarcon-1.la
 %{_includedir}/garcon-1
 %{_pkgconfigdir}/garcon-1.pc
 
