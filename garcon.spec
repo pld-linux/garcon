@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
-%bcond_without	static_libs	# don't build static libraries
+%bcond_with	static_libs	# don't build static libraries
 #
 Summary:	Freedesktop.org compliant menu library for the Xfce desktop environment
 Summary(pl.UTF-8):	Biblioteka menu dla środowiska Xfce zgodna z freedesktop.org
@@ -95,8 +95,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# pt locale is already installed, so there is no need to rename it
-%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/pt_PT
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %find_lang %{name}
@@ -112,14 +110,19 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog HACKING NEWS README STATUS TODO
 %attr(755,root,root) %{_libdir}/libgarcon-1.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgarcon-1.so.0
+%attr(755,root,root) %{_libdir}/libgarcon-gtk2-1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libgarcon-gtk2-1.so.0
 %{_sysconfdir}/xdg/menus
 %{_datadir}/desktop-directories
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgarcon-1.so
+%attr(755,root,root) %{_libdir}/libgarcon-gtk2-1.so
 %{_includedir}/garcon-1
+%{_includedir}/garcon-gtk2-1
 %{_pkgconfigdir}/garcon-1.pc
+%{_pkgconfigdir}/garcon-gtk2-1.pc
 
 %if %{with static_libs}
 %files static
