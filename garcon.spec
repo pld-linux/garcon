@@ -1,25 +1,29 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
-%bcond_with	static_libs	# don't build static libraries
+%bcond_with	static_libs	# static libraries
 #
 Summary:	Freedesktop.org compliant menu library for the Xfce desktop environment
 Summary(pl.UTF-8):	Biblioteka menu dla środowiska Xfce zgodna z freedesktop.org
 Name:		garcon
 Version:	0.3.0
 Release:	2
-License:	LGPL
-Group:		X11/Libraries
+License:	LGPL v2+
+Group:		Libraries
 Source0:	http://archive.xfce.org/src/libs/garcon/0.3/%{name}-%{version}.tar.bz2
 # Source0-md5:	853f13fbad4760374a2a889acaa4a6c1
 URL:		http://archive.xfce.org/src/libs/garcon/
 BuildRequires:	gettext-devel
-BuildRequires:	glib2-devel >= 1:2.14.0
+BuildRequires:	glib2-devel >= 1:2.30.0
+BuildRequires:	gtk+2-devel >= 2:2.24.0
 BuildRequires:	gtk-doc >= 1.0
-BuildRequires:	intltool
-BuildRequires:	libxfce4util-devel 
+BuildRequires:	intltool >= 0.31
+BuildRequires:	libxfce4ui-devel >= 4.10.0
+BuildRequires:	libxfce4util-devel >= 4.10.0
 BuildRequires:	pkgconfig
 BuildRequires:	xfce4-dev-tools >= 4.10.0
+Requires:	glib2 >= 1:2.30.0
+Requires:	libxfce4util >= 4.10.0
 Obsoletes:	libxfce4menu
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -40,9 +44,9 @@ pomocą edytora.
 %package devel
 Summary:	Header files for garcon library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki garcon
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.14.0
+Requires:	glib2-devel >= 1:2.30.0
 Obsoletes:	libxfce4menu-devel
 
 %description devel
@@ -54,7 +58,7 @@ Pliki nagłówkowe biblioteki garcon.
 %package static
 Summary:	Static garcon library
 Summary(pl.UTF-8):	Statyczna biblioteka garcon
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Obsoletes:	libxfce4menu-static
 
@@ -63,6 +67,47 @@ Static garcon library.
 
 %description static -l pl.UTF-8
 Statyczna biblioteka garcon.
+
+%package gtk2
+Summary:	Freedesktop.org compliant menu library - GTK+ 2 support
+Summary(pl.UTF-8):	Biblioteka menu zgodnego z Freedesktop.org - obsługa GTK+2
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	gtk+2 >= 2:2.24.0
+Requires:	libxfce4ui >= 4.10.0
+
+%description gtk2
+Freedesktop.org compliant menu library - GTK+ 2 support.
+
+%description gtk2 -l pl.UTF-8
+Biblioteka menu zgodnego z Freedesktop.org - obsługa GTK+2.
+
+%package gtk2-devel
+Summary:	Header files for garcon-gtk2 library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki garcon-gtk2
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-gtk2 = %{version}-%{release}
+Requires:	gtk+2-devel >= 2:2.24.0
+Requires:	libxfce4ui-devel >= 4.10.0
+
+%description gtk2-devel
+Header files for garcon-gtk2 library.
+
+%description gtk2-devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki garcon-gtk2.
+
+%package gtk2-static
+Summary:	Static garcon-gtk2 library
+Summary(pl.UTF-8):	Biblioteka statyczna garcon-gtk2
+Group:		X11/Development/Libraries
+Requires:	%{name}-gtk2-devel = %{version}-%{release}
+
+%description gtk2-static
+Static garcon-gtk2 library.
+
+%description gtk2-static -l pl.UTF-8
+Biblioteka statyczna garcon-gtk2.
 
 %package apidocs
 Summary:	garcon API documentation
@@ -82,10 +127,10 @@ Dokumentacja API biblioteki garcon.
 
 %build
 %configure \
-	%{!?with_static_libs:--disable-static} \
 	--enable-gtk-doc \
-	--with-html-dir=%{_gtkdocdir} \
-	--disable-silent-rules
+	--disable-silent-rules \
+	%{?with_static_libs:--enable-static} \
+	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
 
@@ -95,8 +140,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/uz@Latn
+# obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+# just a copy of uz (only insignificant headers differ)
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/uz@Latn
 
 %find_lang %{name}
 
@@ -106,29 +153,44 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
+%post	gtk2 -p /sbin/ldconfig
+%postun	gtk2 -p /sbin/ldconfig
+
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog HACKING NEWS README STATUS TODO
 %attr(755,root,root) %{_libdir}/libgarcon-1.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgarcon-1.so.0
-%attr(755,root,root) %{_libdir}/libgarcon-gtk2-1.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgarcon-gtk2-1.so.0
 %{_sysconfdir}/xdg/menus
 %{_datadir}/desktop-directories
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgarcon-1.so
-%attr(755,root,root) %{_libdir}/libgarcon-gtk2-1.so
 %{_includedir}/garcon-1
-%{_includedir}/garcon-gtk2-1
 %{_pkgconfigdir}/garcon-1.pc
-%{_pkgconfigdir}/garcon-gtk2-1.pc
 
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libgarcon-1.a
+%endif
+
+%files gtk2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libgarcon-gtk2-1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libgarcon-gtk2-1.so.0
+
+%files gtk2-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libgarcon-gtk2-1.so
+%{_includedir}/garcon-gtk2-1
+%{_pkgconfigdir}/garcon-gtk2-1.pc
+
+%if %{with static_libs}
+%files gtk2-static
+%defattr(644,root,root,755)
+%{_libdir}/libgarcon-gtk2-1.a
 %endif
 
 %if %{with apidocs}
