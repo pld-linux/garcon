@@ -13,7 +13,7 @@ Group:		Libraries
 Source0:	http://archive.xfce.org/src/libs/garcon/0.3/%{name}-%{version}.tar.bz2
 # Source0-md5:	853f13fbad4760374a2a889acaa4a6c1
 URL:		http://archive.xfce.org/src/libs/garcon/
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.30.0
 BuildRequires:	gtk+2-devel >= 2:2.24.0
 BuildRequires:	gtk-doc >= 1.0
