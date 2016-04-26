@@ -2,12 +2,12 @@
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
 %bcond_with	static_libs	# static libraries
-#
+
 Summary:	Freedesktop.org compliant menu library for the Xfce desktop environment
 Summary(pl.UTF-8):	Biblioteka menu dla środowiska Xfce zgodna z freedesktop.org
 Name:		garcon
 Version:	0.4.0
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://archive.xfce.org/src/xfce/garcon/0.4/%{name}-%{version}.tar.bz2
@@ -115,6 +115,9 @@ Summary(pl.UTF-8):	Dokumentacja API biblioteki garcon
 Group:		Documentation
 Requires:	gtk-doc-common
 Obsoletes:	libxfce4menu-apidocs
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 API and internal documentation for garcon library.
