@@ -6,16 +6,17 @@
 Summary:	Freedesktop.org compliant menu library for the Xfce desktop environment
 Summary(pl.UTF-8):	Biblioteka menu dla środowiska Xfce zgodna z freedesktop.org
 Name:		garcon
-Version:	0.4.0
-Release:	2
+Version:	0.6.1
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://archive.xfce.org/src/xfce/garcon/0.4/%{name}-%{version}.tar.bz2
-# Source0-md5:	aba62b80787aac295083bf7afd419ffb
+Source0:	http://archive.xfce.org/src/xfce/garcon/0.6/%{name}-%{version}.tar.bz2
+# Source0-md5:	174690ad19243f7ef9529cb0c24b9080
 URL:		http://archive.xfce.org/src/xfce/garcon/
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.30.0
 BuildRequires:	gtk+2-devel >= 2:2.24.0
+BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc >= 1.0
 BuildRequires:	intltool >= 0.31
 BuildRequires:	libxfce4ui-devel >= 4.10.0
@@ -109,6 +110,45 @@ Static garcon-gtk2 library.
 %description gtk2-static -l pl.UTF-8
 Biblioteka statyczna garcon-gtk2.
 
+%package gtk3
+Summary:	Freedesktop.org compliant menu library - GTK+ 3 support
+Summary(pl.UTF-8):	Biblioteka menu zgodnego z Freedesktop.org - obsługa GTK+3
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	gtk+3
+
+%description gtk3
+Freedesktop.org compliant menu library - GTK+ 3 support.
+
+%description gtk3 -l pl.UTF-8
+Biblioteka menu zgodnego z Freedesktop.org - obsługa GTK+3.
+
+%package gtk3-devel
+Summary:	Header files for garcon-gtk3 library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki garcon-gtk3
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-gtk3 = %{version}-%{release}
+Requires:	gtk+3-devel
+
+%description gtk3-devel
+Header files for garcon-gtk3 library.
+
+%description gtk3-devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki garcon-gtk3.
+
+%package gtk3-static
+Summary:	Static garcon-gtk3 library
+Summary(pl.UTF-8):	Biblioteka statyczna garcon-gtk3
+Group:		X11/Development/Libraries
+Requires:	%{name}-gtk3-devel = %{version}-%{release}
+
+%description gtk3-static
+Static garcon-gtk3 library.
+
+%description gtk3-static -l pl.UTF-8
+Biblioteka statyczna garcon-gtk3.
+
 %package apidocs
 Summary:	garcon API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki garcon
@@ -194,6 +234,23 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk2-static
 %defattr(644,root,root,755)
 %{_libdir}/libgarcon-gtk2-1.a
+%endif
+
+%files gtk3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libgarcon-gtk3-1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libgarcon-gtk3-1.so.0
+
+%files gtk3-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libgarcon-gtk3-1.so
+%{_includedir}/garcon-gtk3-1
+%{_pkgconfigdir}/garcon-gtk3-1.pc
+
+%if %{with static_libs}
+%files gtk3-static
+%defattr(644,root,root,755)
+%{_libdir}/libgarcon-gtk3-1.a
 %endif
 
 %if %{with apidocs}
