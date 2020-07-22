@@ -6,12 +6,12 @@
 Summary:	Freedesktop.org compliant menu library for the Xfce desktop environment
 Summary(pl.UTF-8):	Biblioteka menu dla środowiska Xfce zgodna z freedesktop.org
 Name:		garcon
-Version:	0.6.4
+Version:	0.7.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://archive.xfce.org/src/xfce/garcon/0.6/%{name}-%{version}.tar.bz2
-# Source0-md5:	9715aa8214be9c553d9b8c44fde90b9f
+Source0:	http://archive.xfce.org/src/xfce/garcon/0.7/%{name}-%{version}.tar.bz2
+# Source0-md5:	2964c7a7e5d4aac58b4afef9b8602914
 URL:		http://archive.xfce.org/src/xfce/garcon/
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.30.0
