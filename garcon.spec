@@ -7,24 +7,25 @@ Summary:	Freedesktop.org compliant menu library for the Xfce desktop environment
 Summary(pl.UTF-8):	Biblioteka menu dla środowiska Xfce zgodna z freedesktop.org
 Name:		garcon
 Version:	0.7.0
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://archive.xfce.org/src/xfce/garcon/0.7/%{name}-%{version}.tar.bz2
+Source0:	https://archive.xfce.org/src/xfce/garcon/0.7/%{name}-%{version}.tar.bz2
 # Source0-md5:	2964c7a7e5d4aac58b4afef9b8602914
-URL:		http://archive.xfce.org/src/xfce/garcon/
+URL:		https://gitlab.xfce.org/xfce/garcon
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.30.0
 BuildRequires:	gtk+2-devel >= 2:2.24.0
-BuildRequires:	gtk+3-devel
+BuildRequires:	gtk+3-devel >= 3.20.0
 BuildRequires:	gtk-doc >= 1.0
-BuildRequires:	intltool >= 0.31
-BuildRequires:	libxfce4ui-devel >= 4.10.0
-BuildRequires:	libxfce4util-devel >= 4.10.0
+BuildRequires:	intltool >= 0.35
+BuildRequires:	libxfce4ui-devel >= 4.12.0
+BuildRequires:	libxfce4util-devel >= 4.12.0
 BuildRequires:	pkgconfig
 BuildRequires:	xfce4-dev-tools >= 4.10.0
+Requires:	filesystem >= 4.1-15
 Requires:	glib2 >= 1:2.30.0
-Requires:	libxfce4util >= 4.10.0
+Requires:	libxfce4util >= 4.12.0
 Obsoletes:	libxfce4menu
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -75,7 +76,7 @@ Summary(pl.UTF-8):	Biblioteka menu zgodnego z Freedesktop.org - obsługa GTK+2
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	gtk+2 >= 2:2.24.0
-Requires:	libxfce4ui >= 4.10.0
+Requires:	libxfce4ui >= 4.12.0
 
 %description gtk2
 Freedesktop.org compliant menu library - GTK+ 2 support.
@@ -90,7 +91,7 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk2 = %{version}-%{release}
 Requires:	gtk+2-devel >= 2:2.24.0
-Requires:	libxfce4ui-devel >= 4.10.0
+Requires:	libxfce4ui-devel >= 4.12.0
 
 %description gtk2-devel
 Header files for garcon-gtk2 library.
@@ -115,7 +116,8 @@ Summary:	Freedesktop.org compliant menu library - GTK+ 3 support
 Summary(pl.UTF-8):	Biblioteka menu zgodnego z Freedesktop.org - obsługa GTK+3
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	gtk+3
+Requires:	gtk+3 >= 3.20.0
+Requires:	libxfce4ui >= 4.12.0
 
 %description gtk3
 Freedesktop.org compliant menu library - GTK+ 3 support.
@@ -129,7 +131,8 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki garcon-gtk3
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk3 = %{version}-%{release}
-Requires:	gtk+3-devel
+Requires:	gtk+3-devel >= 3.20.0
+Requires:	libxfce4ui-devel >= 4.12.0
 
 %description gtk3-devel
 Header files for garcon-gtk3 library.
@@ -155,7 +158,7 @@ Summary(pl.UTF-8):	Dokumentacja API biblioteki garcon
 Group:		Documentation
 Requires:	gtk-doc-common
 Obsoletes:	libxfce4menu-apidocs
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -185,10 +188,12 @@ rm -rf $RPM_BUILD_ROOT
 
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
-# just a copy of uz (only insignificant headers differ)
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/uz@Latn
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ie
+# duplicate of hy
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/hy_AM
+# older version of uz
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/uz@Latn
+# not supported by glibc (as of 2.32)
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ie
 
 %find_lang %{name}
 
@@ -201,13 +206,16 @@ rm -rf $RPM_BUILD_ROOT
 %post	gtk2 -p /sbin/ldconfig
 %postun	gtk2 -p /sbin/ldconfig
 
+%post	gtk3 -p /sbin/ldconfig
+%postun	gtk3 -p /sbin/ldconfig
+
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog HACKING NEWS README STATUS TODO
 %attr(755,root,root) %{_libdir}/libgarcon-1.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgarcon-1.so.0
-%{_sysconfdir}/xdg/menus
-%{_datadir}/desktop-directories
+%{_sysconfdir}/xdg/menus/xfce-applications.menu
+%{_datadir}/desktop-directories/xfce-*.directory
 
 %files devel
 %defattr(644,root,root,755)
