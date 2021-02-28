@@ -118,9 +118,7 @@ Summary(pl.UTF-8):	Dokumentacja API biblioteki garcon
 Group:		Documentation
 Requires:	gtk-doc-common
 Obsoletes:	libxfce4menu-apidocs
-%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 API and internal documentation for garcon library.
