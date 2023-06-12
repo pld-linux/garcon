@@ -14,20 +14,21 @@ Source0:	https://archive.xfce.org/src/xfce/garcon/4.18/%{name}-%{version}.tar.bz
 # Source0-md5:	0c9dd937f595beb7052657c44f77c272
 URL:		https://gitlab.xfce.org/xfce/garcon
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel >= 1:2.50.0
+BuildRequires:	glib2-devel >= 1:2.66.0
 BuildRequires:	gobject-introspection-devel >= 1.66.0
-BuildRequires:	gtk+3-devel >= 3.20.0
-BuildRequires:	gtk-doc >= 1.0
-BuildRequires:	intltool >= 0.35
+BuildRequires:	gtk+3-devel >= 3.24.0
+BuildRequires:	gtk-doc >= 1.20
+BuildRequires:	intltool >= 0.51
 BuildRequires:	libxfce4ui-devel >= 4.18.0
 BuildRequires:	libxfce4util-devel >= 4.18.0
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	xfce4-dev-tools >= 4.18.0
 Requires:	filesystem >= 4.1-15
-Requires:	glib2 >= 1:2.50.0
+Requires:	glib2 >= 1:2.66.0
 Requires:	libxfce4util >= 4.18.0
-Obsoletes:	garcon-gtk2
-Obsoletes:	libxfce4menu
+Obsoletes:	garcon-gtk2 < 0.8
+Obsoletes:	libxfce4menu < 4.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -49,9 +50,9 @@ Summary:	Header files for garcon library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki garcon
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.50.0
-Obsoletes:	garcon-gtk2-devel
-Obsoletes:	libxfce4menu-devel
+Requires:	glib2-devel >= 1:2.66.0
+Obsoletes:	garcon-gtk2-devel < 0.8
+Obsoletes:	libxfce4menu-devel < 4.8
 
 %description devel
 Header files for garcon library.
@@ -64,7 +65,7 @@ Summary:	Static garcon library
 Summary(pl.UTF-8):	Statyczna biblioteka garcon
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
-Obsoletes:	libxfce4menu-static
+Obsoletes:	libxfce4menu-static < 4.8
 
 %description static
 Static garcon library.
@@ -77,7 +78,7 @@ Summary:	Freedesktop.org compliant menu library - GTK+ 3 support
 Summary(pl.UTF-8):	Biblioteka menu zgodnego z Freedesktop.org - obsługa GTK+3
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	gtk+3 >= 3.20.0
+Requires:	gtk+3 >= 3.24.0
 Requires:	libxfce4ui >= 4.18.0
 
 %description gtk3
@@ -92,7 +93,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki garcon-gtk3
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk3 = %{version}-%{release}
-Requires:	gtk+3-devel >= 3.20.0
+Requires:	gtk+3-devel >= 3.24.0
 Requires:	libxfce4ui-devel >= 4.18.0
 
 %description gtk3-devel
@@ -118,7 +119,7 @@ Summary:	garcon API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki garcon
 Group:		Documentation
 Requires:	gtk-doc-common
-Obsoletes:	libxfce4menu-apidocs
+Obsoletes:	libxfce4menu-apidocs < 4.8
 BuildArch:	noarch
 
 %description apidocs
@@ -153,7 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/hy_AM
 # older version of uz
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/uz@Latn
-# not supported by glibc (as of 2.32)
+# not supported by glibc (as of 2.37)
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/{hye,ie}
 
 %find_lang %{name}
