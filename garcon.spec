@@ -13,12 +13,11 @@ Group:		Libraries
 Source0:	https://archive.xfce.org/src/xfce/garcon/4.20/%{name}-%{version}.tar.bz2
 # Source0-md5:	fe17e9cb15a62013e0086183a446e89e
 URL:		https://gitlab.xfce.org/xfce/garcon
-BuildRequires:	gettext-tools
+BuildRequires:	gettext-tools >= 0.19.8
 BuildRequires:	glib2-devel >= 1:2.72.0
-BuildRequires:	gobject-introspection-devel >= 1.66.0
+BuildRequires:	gobject-introspection-devel >= 1.72.0
 BuildRequires:	gtk+3-devel >= 3.24.0
 BuildRequires:	gtk-doc >= 1.20
-BuildRequires:	intltool >= 0.51
 BuildRequires:	libxfce4ui-devel >= 4.20.0
 BuildRequires:	libxfce4util-devel >= 4.20.0
 BuildRequires:	pkgconfig
